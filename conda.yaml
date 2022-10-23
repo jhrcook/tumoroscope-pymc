@@ -1,0 +1,20 @@
+name: tumoroscope-pymc
+channels:
+  - conda-forge
+  - defaults
+dependencies:
+  - arviz>=0.12
+  - ipython
+  - jupyterlab>=3.4
+  - nbconvert
+  - numpy>=1.23
+  - pandas>=1.5
+  - pip
+  - pymc>=4.2
+  - python>=3.10
+  - python-graphviz
+  - pip:
+    - black
+    - flit>=3.7
+    - pytest
+    - tox>=3.26
