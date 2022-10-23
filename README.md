@@ -59,6 +59,27 @@ pm.model_to_graphviz(model)
 
 
 
+## Developing
+
+Setup up the develpment envionrment using `conda` (or `mamba`)
+
+```bash
+mamba env create -f conda.yaml
+conda activate tumoroscope-pymc
+```
+
+Run the test suite using `tox`
+
+```bash
+tox
+```
+
+Build the README documentation by re-executing the `README.ipynb` notebook and converting it to Markdown using the following command
+
+```bash
+tox -e readme
+```
+
 ---
 
 ## Environment information
@@ -88,5 +109,5 @@ pm.model_to_graphviz(model)
 
     Git branch: dev
 
-    numpy: 1.23.4
     pymc : 4.2.2
+    numpy: 1.23.4
