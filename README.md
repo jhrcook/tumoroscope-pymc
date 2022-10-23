@@ -34,3 +34,59 @@ pip install git+https://github.com/jhrcook/tumoroscope-pymc.git
 ## Use
 
 (TODO)
+
+
+```python
+import numpy as np
+import pymc as pm
+
+from tumoroscope import build_tumoroscope_model, TumoroscopeData
+from tumoroscope.mock_data import generate_random_data
+
+np.random.seed(1)
+data = generate_random_data()
+
+model = build_tumoroscope_model(data)
+pm.model_to_graphviz(model)
+```
+
+
+
+
+
+![svg](README_files/README_3_0.svg)
+
+
+
+
+---
+
+## Environment information
+
+
+
+```python
+%load_ext watermark
+%watermark -d -u -v -iv -b -h -m
+```
+
+    Last updated: 2022-10-23
+
+    Python implementation: CPython
+    Python version       : 3.10.6
+    IPython version      : 8.5.0
+
+    Compiler    : Clang 13.0.1
+    OS          : Darwin
+    Release     : 21.6.0
+    Machine     : x86_64
+    Processor   : i386
+    CPU cores   : 4
+    Architecture: 64bit
+
+    Hostname: JHCookMac.local
+
+    Git branch: dev
+
+    numpy: 1.23.4
+    pymc : 4.2.2
