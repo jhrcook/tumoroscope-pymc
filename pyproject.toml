@@ -8,6 +8,10 @@ authors = [{name = "Joshua Cook", email = "joshuacook0023@gmail.com"}]
 license = {file = "LICENSE"}
 classifiers = ["License :: OSI Approved :: GNU General Public License v3 or later (GPLv3+)"]
 dynamic = ["version", "description"]
+dependencies = [
+    "numpy >= 1.23.0",
+    "pymc >= 4.0.0",
+]
 
 [tool.flit.module]
 name = "tumoroscope"
