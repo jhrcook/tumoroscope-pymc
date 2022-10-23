@@ -21,10 +21,19 @@ def _make_tumoroscope_model_coords(data: TumoroscopeData) -> dict[str, list[str]
     return coords
 
 
-def tumoroscope(
+def build_tumoroscope_model(
     data: TumoroscopeData, fixed: bool = False, *, validate_data: bool = True
 ) -> pm.Model:
-    """Build the 'Tumoroscope' model."""
+    """Build the 'Tumoroscope' model.
+
+    Args:
+        data (TumoroscopeData): Input data.
+        validate_data (bool, optional): Whether to validate the data confirms to
+        certain structural and value requirements. Defaults to `True`.
+
+    Returns:
+        pm.Model: PyMC model.
+    """
     if validate_data:
         validate_tumoroscope_data(data)
 

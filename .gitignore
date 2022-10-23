@@ -200,3 +200,4 @@ cython_debug/
 
 
 .python-version
+.vscode/
