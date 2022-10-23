@@ -1,0 +1,41 @@
+# See https://pre-commit.com for more information
+# See https://pre-commit.com/hooks.html for more hooks
+exclude: >
+    (?x)^(
+    docs/.*
+    )$
+repos:
+-   repo: https://github.com/pre-commit/pre-commit-hooks
+    rev: v4.3.0
+    hooks:
+    -   id: no-commit-to-branch
+        args: ["--branch", "master", "--branch", "main"]
+    -   id: trailing-whitespace
+    -   id: end-of-file-fixer
+    -   id: check-yaml
+    -   id: check-added-large-files
+-   repo: https://github.com/pycqa/isort
+    rev: 5.10.1
+    hooks:
+    -   id: isort
+        args: ["--profile", "black"]
+-   repo: https://github.com/pre-commit/mirrors-mypy
+    rev: v0.982
+    hooks:
+    -   id: mypy
+        additional_dependencies: [pydantic, types-PyYAML]
+-   repo: https://github.com/psf/black
+    rev: 22.10.0
+    hooks:
+    -   id: black
+-   repo: https://github.com/PyCQA/pydocstyle
+    rev: 6.1.1
+    hooks:
+    -   id: pydocstyle
+        types: [python]
+        files: "tumoroscope/.*"
+        args: ["--convention", "google", "--add-ignore", "D301"]
+-   repo: https://github.com/PyCQA/flake8
+    rev: 5.0.4
+    hooks:
+    -   id: flake8
