@@ -66,11 +66,17 @@ class TumoroscopeData:
         if not self.C.shape == (self.M, self.K):
             msg("C must have shape (M,K).")
 
-        if self.D_obs is not None and self.D_obs.shape != (self.M, self.S):
-            msg("D_obs must have shape (M,S).")
+        if self.D_obs is not None:
+            if self.D_obs.shape != (self.M, self.S):
+                msg("D_obs must have shape (M,S).")
+            if np.any(self.D_obs < 0):
+                msg("D_obs must be non-negative.")
 
-        if self.A_obs is not None and self.A_obs.shape != (self.M, self.S):
-            msg("A_obs must have shape (M,S).")
+        if self.A_obs is not None:
+            if self.A_obs.shape != (self.M, self.S):
+                msg("A_obs must have shape (M,S).")
+            if np.any(self.A_obs < 0):
+                msg("A_obs must be non-negative.")
 
         _positives = np.array([self.zeta_s, self.F_0, self.l, self.r, self.p])
         if np.any(_positives <= 0):

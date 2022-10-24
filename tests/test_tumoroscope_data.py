@@ -100,3 +100,22 @@ def test_validate_zygosity_negative(random_data: TumoroscopeData) -> None:
     with pytest.raises(TumoroscopeDataValidationError) as err:
         random_data.validate()
     assert "All values for C must be between [0, 1]." in str(err.value)
+
+
+@pytest.mark.parametrize("param", ("D_obs", "A_obs"))
+@pytest.mark.parametrize("value", (-1, -5, -1.0, -5.0))
+@pytest.mark.parametrize("pos", ((0, 0), (1, 1), (5, 5)))
+def test_counts_data_negative(
+    make_random_data: Callable[[int, int, int], TumoroscopeData],
+    param: str,
+    value: float | int,
+    pos: tuple[int, int],
+) -> None:
+    _info = asdict(make_random_data(5, 13, 23))
+    _info[param][pos[0], pos[1]] = value
+    data = TumoroscopeData(**_info)
+    with pytest.raises(TumoroscopeDataValidationError) as err:
+        data.validate()
+    err_msg = str(err.value)
+    assert param in err_msg
+    assert "must be non-negative" in err_msg
