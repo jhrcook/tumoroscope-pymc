@@ -1,13 +1,16 @@
+<!-- Do NOT edit the Markdown file directly - generated from the Jupyter notebook. -->
+
 # Tumoroscope in PyMC
 
-[![python](https://img.shields.io/badge/Python-3.10-3776AB.svg?style=flat&logo=python&logoColor=white)](https://www.python.org)
+[![python](https://img.shields.io/badge/Python-3.9+-3776AB.svg?style=flat&logo=python&logoColor=white)](https://www.python.org)
+[![Pytest](https://github.com/jhrcook/tumoroscope-pymc/actions/workflows/pytest.yaml/badge.svg)](https://github.com/jhrcook/tumoroscope-pymc/actions/workflows/pytest.yaml)
 [![Code style: black](https://img.shields.io/badge/code%20style-black-000000.svg)](https://github.com/psf/black)
 [![pre-commit](https://img.shields.io/badge/pre--commit-enabled-brightgreen?logo=pre-commit&logoColor=white)](https://github.com/pre-commit/pre-commit)
 [![Checked with mypy](http://www.mypy-lang.org/static/mypy_badge.svg)](http://mypy-lang.org/)
 [![pydocstyle](https://img.shields.io/badge/pydocstyle-enabled-AD4CD3)](http://www.pydocstyle.org/en/stable/)
 [![License: GPLv3](https://img.shields.io/badge/License-GPLv3-blue.svg)](https://www.gnu.org/licenses/gpl-3.0)
 
-**WIP**
+**This package is a Work-in-Progress.**
 
 This package builds the ['Tumoroscope']() (Shafighi *et al.*, 2022, bioRxiv preprint) model with the probabilistic programming library [PyMC]().
 'Tumoroscope' is a "probabilistic model that accurately infers cancer clones and their high-resolution localization by integrating pathological images, whole exome sequencing, and spatial transcriptomics data."
@@ -40,7 +43,7 @@ pip install git+https://github.com/jhrcook/tumoroscope-pymc.git
 import numpy as np
 import pymc as pm
 
-from tumoroscope import build_tumoroscope_model, TumoroscopeData
+from tumoroscope import TumoroscopeData, build_tumoroscope_model
 from tumoroscope.mock_data import generate_random_data
 
 np.random.seed(1)
@@ -91,7 +94,7 @@ tox -e readme
 %watermark -d -u -v -iv -b -h -m
 ```
 
-    Last updated: 2022-10-23
+    Last updated: 2022-10-24
 
     Python implementation: CPython
     Python version       : 3.10.6
@@ -109,5 +112,5 @@ tox -e readme
 
     Git branch: dev
 
-    pymc : 4.2.2
     numpy: 1.23.4
+    pymc : 4.2.2

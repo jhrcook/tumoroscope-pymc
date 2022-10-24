@@ -15,6 +15,9 @@ dependencies:
   - python-graphviz
   - pip:
     - black
+    - flake8
     - flit>=3.7
+    - mypy
     - pytest
+    - pyupgrade
     - tox>=3.26
