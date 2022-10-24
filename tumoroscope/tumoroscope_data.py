@@ -4,6 +4,14 @@ from dataclasses import dataclass
 
 import numpy as np
 
+from .utilities import ErrorMessage
+
+
+class TumoroscopeDataValidationError(BaseException):
+    """Tumoroscope data validation error."""
+
+    ...
+
 
 @dataclass
 class TumoroscopeData:
@@ -22,3 +30,51 @@ class TumoroscopeData:
     l: float = 100  # Scaling factor to discretize F
     r: float = 0.1  # shape parameter for Gamma over Phi
     p: float = 1.0  # rate parameter for Gamma over Phi
+
+    def validate(self) -> None:
+        """Validate 'Tumoroscope' input data.
+
+        Args:
+            data (TumoroscopeData): Input data for building the 'Tumoroscope' model.
+
+        Raises:
+            TumoroscopeDataValidationError: Raised if various shape or value
+            requirements are not met.
+        """
+        msg = ErrorMessage()
+        if not (self.K > 0 and self.S > 0 and self.M > 0):
+            msg("K, S, and M must be greater than 0.")
+
+        if not np.isclose(self.F.sum(), 1.0):
+            msg("F must sum to 1.")
+
+        if not self.F.ndim == 1:
+            msg("F must be only 1 dimension.")
+
+        if not self.F.shape[0] == self.K:
+            msg("F must have length of K.")
+
+        if not self.cell_counts.shape == (self.S,):
+            msg("Cell counts array must have dimension (S,).")
+
+        if np.any(self.cell_counts <= 0):
+            msg("Cell counts must be greater than 0 in all spots")
+
+        if not (np.all(self.C >= 0.0) and np.all(self.C <= 1.0)):
+            msg("All values for C must be between [0, 1].")
+
+        if not self.C.shape == (self.M, self.K):
+            msg("C must have shape (M,K).")
+
+        if self.D_obs is not None and self.D_obs.shape != (self.M, self.S):
+            msg("D_obs must have shape (M,S).")
+
+        if self.A_obs is not None and self.A_obs.shape != (self.M, self.S):
+            msg("A_obs must have shape (M,S).")
+
+        _positives = np.array([self.zeta_s, self.F_0, self.l, self.r, self.p])
+        if np.any(_positives <= 0):
+            msg("zeta_s, F_0, l, r, and p must be greater than 0.")
+
+        if msg.final_message is not None:
+            raise TumoroscopeDataValidationError(msg.final_message)

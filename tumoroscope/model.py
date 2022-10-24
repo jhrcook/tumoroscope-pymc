@@ -4,7 +4,6 @@ import aesara.tensor as at
 import numpy as np
 import pymc as pm
 
-from .data_validation import validate_tumoroscope_data
 from .tumoroscope_data import TumoroscopeData
 
 
@@ -35,7 +34,7 @@ def build_tumoroscope_model(
         pm.Model: PyMC model.
     """
     if validate_data:
-        validate_tumoroscope_data(data)
+        data.validate()
 
     coords = _make_tumoroscope_model_coords(data)
     with pm.Model(coords=coords) as model:
