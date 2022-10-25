@@ -39,7 +39,7 @@ repos:
     -   id: pydocstyle
         types: [python]
         files: "tumoroscope/.*"
-        args: ["--convention", "google", "--add-ignore", "D301"]
+        args: ["--convention", "google", "--add-ignore", "D301,D105"]
         additional_dependencies: [toml]
 
 -   repo: https://github.com/PyCQA/flake8

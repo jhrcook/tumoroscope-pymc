@@ -84,3 +84,26 @@ class TumoroscopeData:
 
         if msg.final_message is not None:
             raise TumoroscopeDataValidationError(msg.final_message)
+
+    def __str__(self) -> str:
+        s = "Tumoroscope Data\n"
+        s += f"Data sizes:\n  K: {self.K}  S: {self.S}  M: {self.M}"
+        s += (
+            f"Hyperparameters:\n  zeta_s: {self.zeta_s}  F_0: {self.F_0}  l: {self.l}"
+            + f"  r: {self.r}  p: {self.p}"
+        )
+        s += "Counts data:\n"
+        if self.D_obs is None:
+            s += "  D: (None)  "
+        else:
+            s += "  D: provided  "
+
+        if self.A_obs is None:
+            s += "  A: (None)  "
+        else:
+            s += "  A: provided  "
+
+        return s
+
+    def __repr__(self) -> str:
+        return str(self)
