@@ -20,4 +20,5 @@ dependencies:
     - pyupgrade
     - seaborn==0.12
     - tox>=3.26
+    - watermark
     - -e .
