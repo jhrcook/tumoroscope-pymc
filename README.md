@@ -13,7 +13,7 @@
 This package builds the ['Tumoroscope'](https://www.biorxiv.org/content/10.1101/2022.09.22.508914v1) (Shafighi *et al.*, 2022, bioRxiv preprint) model with the probabilistic programming library [PyMC](https://www.pymc.io/welcome.html).
 'Tumoroscope' is a "probabilistic model that accurately infers cancer clones and their high-resolution localization by integrating pathological images, whole exome sequencing, and spatial transcriptomics data."
 
-![Tumoroscope diagram](tumoroscope-diagram.jpeg)
+![Tumoroscope diagram](https://raw.githubusercontent.com/jhrcook/tumoroscope-pymc/master/tumoroscope-diagram.jpeg)
 
 ## Installation
 
@@ -42,6 +42,9 @@ Shadi Darvish Shafighi, Agnieszka Geras, Barbara Jurzysta, Alireza Sahaf Naeini,
 
 
 ## Use
+
+> *If viewing this package on PyPI, I apologize, but all images below are not viewable.
+> Please click on "Home" in the sidebar or [here](https://github.com/jhrcook/tumoroscope-pymc) to go to the GitHub repository to see the full demonstration of this package.*
 
 Below is a simple example of using this library.
 A small dataset is simulated and used to construct the Tumoroscope model in PyMC.
@@ -582,9 +585,9 @@ Feature requests and bugs are welcome in [Issues](https://github.com/jhrcook/tum
 
     Git branch: master
 
-    numpy     : 1.23.4
-    seaborn   : 0.12.0
-    matplotlib: 3.6.1
-    pymc      : 4.2.2
     pandas    : 1.5.1
+    numpy     : 1.23.4
+    pymc      : 4.2.2
+    matplotlib: 3.6.1
+    seaborn   : 0.12.0
     arviz     : 0.13.0

@@ -28,5 +28,11 @@ name = "tumoroscope"
 Home = "https://github.com/jhrcook/tumoroscope-pymc"
 
 [tool.flit.sdist]
-include = ["tumoroscope/", "README.md", "README_files/", "tumoroscope-diagram.jpeg", "LICENSE"]
+include = [
+    "tumoroscope/",
+    "README.md",
+    "README_files/",
+    "tumoroscope-diagram.jpeg",
+    "LICENSE"
+]
 exclude = ["tumoroscope/__pycache__/"]
