@@ -1,0 +1,10 @@
+cff-version: 1.2.0
+message: "If you use this software, please cite it as below."
+authors:
+- family-names: "Cook"
+  given-names: "Joshua"
+  orcid: "https://orcid.org/0000-0001-9815-6879"
+title: "tumoroscope-pymc"
+version: 0.1.0
+date-released: 2022-10-25
+url: "https://github.com/jhrcook/tumoroscope-pymc"
