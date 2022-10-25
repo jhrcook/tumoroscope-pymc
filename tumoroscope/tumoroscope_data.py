@@ -87,21 +87,21 @@ class TumoroscopeData:
 
     def __str__(self) -> str:
         s = "Tumoroscope Data\n"
-        s += f"Data sizes:\n  K: {self.K}  S: {self.S}  M: {self.M}"
+        s += f" Data sizes:\n   K: {self.K}  S: {self.S}  M: {self.M}\n"
         s += (
-            f"Hyperparameters:\n  zeta_s: {self.zeta_s}  F_0: {self.F_0}  l: {self.l}"
-            + f"  r: {self.r}  p: {self.p}"
+            f" Hyperparameters:\n   zeta_s: {self.zeta_s}  F_0: {self.F_0}  l: {self.l}"
+            + f"  r: {self.r}  p: {self.p}\n"
         )
-        s += "Counts data:\n"
+        s += " Counts data:\n"
         if self.D_obs is None:
-            s += "  D: (None)  "
+            s += "   D: (None)"
         else:
-            s += "  D: provided  "
+            s += "   D: provided"
 
         if self.A_obs is None:
-            s += "  A: (None)  "
+            s += "  A: (None)"
         else:
-            s += "  A: provided  "
+            s += "  A: provided"
 
         return s
 

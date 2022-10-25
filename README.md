@@ -96,10 +96,12 @@ TumoroscopeData(
 
 
     Tumoroscope Data
-    Data sizes:
-      K: 5  S: 10  M: 100Hyperparameters:
-      zeta_s: 1.0  F_0: 1.0  l: 100  r: 0.1  p: 1.0Counts data:
-      D: provided    A: provided
+     Data sizes:
+       K: 5  S: 10  M: 100
+     Hyperparameters:
+       zeta_s: 1.0  F_0: 1.0  l: 100  r: 0.1  p: 1.0
+     Counts data:
+       D: provided  A: provided
 
 
 
@@ -578,11 +580,11 @@ Feature requests and bugs are welcome in [Issues](https://github.com/jhrcook/tum
 
     Hostname: JHCookMac.local
 
-    Git branch: dev
+    Git branch: master
 
-    seaborn   : 0.12.0
-    pandas    : 1.5.1
     numpy     : 1.23.4
-    arviz     : 0.13.0
-    pymc      : 4.2.2
+    seaborn   : 0.12.0
     matplotlib: 3.6.1
+    pymc      : 4.2.2
+    pandas    : 1.5.1
+    arviz     : 0.13.0
