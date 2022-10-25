@@ -10,9 +10,7 @@
 [![pydocstyle](https://img.shields.io/badge/pydocstyle-enabled-AD4CD3)](http://www.pydocstyle.org/en/stable/)
 [![License: GPLv3](https://img.shields.io/badge/License-GPLv3-blue.svg)](https://www.gnu.org/licenses/gpl-3.0)
 
-**This package is a Work-in-Progress.**
-
-This package builds the ['Tumoroscope']() (Shafighi *et al.*, 2022, bioRxiv preprint) model with the probabilistic programming library [PyMC]().
+This package builds the ['Tumoroscope'](https://www.biorxiv.org/content/10.1101/2022.09.22.508914v1) (Shafighi *et al.*, 2022, bioRxiv preprint) model with the probabilistic programming library [PyMC](https://www.pymc.io/welcome.html).
 'Tumoroscope' is a "probabilistic model that accurately infers cancer clones and their high-resolution localization by integrating pathological images, whole exome sequencing, and spatial transcriptomics data."
 
 ![Tumoroscope diagram](tumoroscope-diagram.jpeg)
@@ -25,7 +23,7 @@ This package builds the ['Tumoroscope']() (Shafighi *et al.*, 2022, bioRxiv prep
 You can install this package using `pip` either from PyPI
 
 ```bash
-pip install tumoroscope-pymc  # not available yet
+pip install tumoroscope-pymc
 ```
 
 or from GitHub
@@ -34,14 +32,26 @@ or from GitHub
 pip install git+https://github.com/jhrcook/tumoroscope-pymc.git
 ```
 
+## Background
+
+Below is the abstract of the paper the introduced the 'Tumoroscope' package:
+
+> Spatial and genomic heterogeneity of tumors is the key for cancer progression, treatment, and survival. However, a technology for direct mapping the clones in the tumor tissue based on point mutations is lacking. Here, we propose Tumoroscope, the first probabilistic model that accurately infers cancer clones and their high-resolution localization by integrating pathological images, whole exome sequencing, and spatial transcriptomics data. In contrast to previous methods, Tumoroscope explicitly addresses the problem of deconvoluting the proportions of clones in spatial transcriptomics spots. Applied to a reference prostate cancer dataset and a newly generated breast cancer dataset, Tumoroscope reveals spatial patterns of clone colocalization and mutual exclusion in sub-areas of the tumor tissue. We further infer clone-specific gene expression levels and the most highly expressed genes for each clone. In summary, Tumoroscope enables an integrated study of the spatial, genomic, and phenotypic organization of tumors.
+
+Shadi Darvish Shafighi, Agnieszka Geras, Barbara Jurzysta, Alireza Sahaf Naeini, Igor Filipiuk, Łukasz Rączkowski, Hosein Toosi, Łukasz Koperski, Kim Thrane, Camilla Engblom, Jeff Mold, Xinsong Chen, Johan Hartman, Dominika Nowis, Alessandra Carbone, Jens Lagergren, Ewa Szczurek. "Tumoroscope: a probabilistic model for mapping cancer clones in tumor tissues." *bioRxiv*. 2022.09.22.508914; doi: https://doi.org/10.1101/2022.09.22.508914
+
+
 ## Use
 
 Below is a simple example of using this library.
 A small dataset is simulated and used to construct the Tumoroscope model in PyMC.
 The "Inference Button" of PyMC is then used to sample from the posterior distribution.
 
+First all of the necessary imports for this example are below.
+
 
 ```python
+from math import ceil
 from pathlib import Path
 
 import arviz as az
@@ -62,6 +72,11 @@ from tumoroscope.mock_data import generate_simulated_data
 ```
 
 ### Simulated data
+
+The input to `build_tumoroscope_model()` is a `TumoroscopeData` object.
+This object contains all of the data size parameters, model hyperparameters, and the observed data.
+It also has a `validate()` method for checking basic assumptions about the values and data.
+Below is an example of constructing a `TumoroscopeData` object with random data.
 
 
 ```python
@@ -87,6 +102,12 @@ TumoroscopeData(
       D: provided    A: provided
 
 
+
+For this example, we'll use the provided `generate_simulated_data()` function to create a dataset with 5 clones, 10 spatial transcriptomic spots, and up to 50 mutation positions.
+In this data-generation function, the number of reads per cell per mutation position are randomly sampled from a Poisson distribution.
+Here, I have provided a relatively high rate of $\lambda = 2.5$ to ensure the read coverage is very high for demonstration purposes of Tumoroscope.
+The default value, though, provides more realistic read coverage for a good spatial transcriptomic study.
+This function returns a `SimulatedTumoroscopeData` object containing the true underlying data (including a table of cell labels in each spot) and the input `TumoroscopeData` object as the `sim_data` attribute.
 
 
 ```python
@@ -160,6 +181,10 @@ simulation.true_labels.head()
 
 
 
+Below is a visualization of the cells in each spot.
+The spots are represented by the horizontally-arrange boxes and each point is a cell, colored by its clone label.
+To be clear, this information is only known because we simulated the data and the point of 'Tumoroscope' is to figure out these labels.
+
 
 ```python
 np.random.seed(3)
@@ -189,9 +214,13 @@ plt.show()
 
 
 
-![png](README_files/README_8_0.png)
+![png](README_files/README_12_0.png)
 
 
+
+Below are the mutations assigned to each clone.
+In real-world applications, this information comes from the bulk DNA data.
+The zygosity of each mutation for each clone is also known (not shown here).
 
 
 ```python
@@ -211,9 +240,12 @@ plt.show()
 
 
 
-![png](README_files/README_9_0.png)
+![png](README_files/README_14_0.png)
 
 
+
+Finally, the heatmaps below show the total read counts (left) and number of alternative read counts (right) per spot and mutation position.
+This is the data gathered from the spatial transcriptomics.
 
 
 ```python
@@ -233,9 +265,18 @@ plt.show()
 
 
 
-![png](README_files/README_10_0.png)
+![png](README_files/README_16_0.png)
 
 
+
+### Model
+
+The model is built by passing a `TumoroscopeData` object to the `build_tumoroscope_model()` function.
+This function has other arguments including the option for wether to use the "fixed" form of the model where the number of cells per position is assumed to be accurately known.
+As in the paper, the "unfixed" form of the model is default (i.e. `fixed = False`).
+By default, the input data is validated, though this can be skipped incase I have applied incorrect assumptions to the data (if you believe this is a the case, please open an [Issue](https://github.com/jhrcook/tumoroscope-pymc/issues) so I can adjust the validation method.)
+
+Below, I build the model with the simulated data and show the model structure.
 
 
 ```python
@@ -247,12 +288,13 @@ pm.model_to_graphviz(tumoroscope_model)
 
 
 
-![svg](README_files/README_11_0.svg)
+![svg](README_files/README_18_0.svg)
 
 
 
 
-MCMC runtime was approximately 5 minutes on my computer.
+With the model built, we can sample from the posterior distribution using PyMC's "Inference Button": `pm.sample()`.
+To make development easier, I have cached the posterior trace object, but sampling for this simulation originally took about 5 minutes.
 
 
 ```python
@@ -274,6 +316,12 @@ else:
 
     Retrieving from cache.
 
+
+### Posterior analysis
+
+We can now inspect the model's results.
+(Of course you would also want to conduct various diagnostic checks on the MCMC sampling process, but I have skipped that here.)
+We can look at the estimates for the proportion of each clone in each spot of the spatial transcriptomics by inspecting $H$.
 
 
 ```python
@@ -380,10 +428,12 @@ h_post.head()
 
 
 
+The plot below shows the posterior distribution for the estimated proportion of the cells in each spot that belong to each clone.
+
 
 ```python
 h_post = trace.posterior["H"].to_dataframe().reset_index()
-_, ax = plt.subplots(figsize=(8, 4))
+_, ax = plt.subplots(figsize=(8, 3))
 sns.violinplot(
     data=h_post,
     x="spot",
@@ -395,6 +445,7 @@ sns.violinplot(
     linewidth=0.5,
     ax=ax,
 )
+ax.set_ylim(0, 1)
 for i in range(simulation.sim_data.S):
     ax.axvline(i + 0.5, c="grey", lw=0.5)
 
@@ -406,9 +457,12 @@ plt.show()
 
 
 
-![png](README_files/README_15_0.png)
+![png](README_files/README_24_0.png)
 
 
+
+And finally, we can compare the model's estimates (in red for each chain with mean and 89% HDI)v against the known proportions in each spot (blue).
+In this case, the model was quite successful.
 
 
 ```python
@@ -418,9 +472,12 @@ def frac_clone(s: pd.Series, k: int) -> float:
 
 
 fig, axes = plt.subplots(
-    nrows=simulation.sim_data.K, figsize=(5, 1.8 * simulation.sim_data.K), sharex=True
+    nrows=ceil(simulation.sim_data.K / 2),
+    ncols=2,
+    figsize=(8, 1 * simulation.sim_data.K),
+    sharex=True,
 )
-for clone_i, ax in enumerate(axes.flatten()):
+for ax, clone_i in zip(axes.flatten(), range(simulation.sim_data.K)):
     clone = f"c{clone_i}"
     ax.set_title(f"clone {clone}")
 
@@ -450,40 +507,49 @@ for clone_i, ax in enumerate(axes.flatten()):
         ax.vlines(
             x=_x, ymin=_hdi[:, 0], ymax=_hdi[:, 1], lw=0.5, zorder=10, color="tab:red"
         )
-    ax.set_ylabel("proportion of cells")
+    # ax.set_ylabel("proportion of cells")
+    ax.set_ylabel(None)
     ax.set_xlabel(None)
 
-axes[-1].set_xlabel("spot")
+fig.supxlabel("spot", va="bottom")
+fig.supylabel("proportion of cells")
+
+for ax in axes.flatten()[simulation.sim_data.K :]:
+    ax.axis("off")
+
 fig.tight_layout()
 plt.show()
 ```
 
 
 
-![png](README_files/README_16_0.png)
+![png](README_files/README_26_0.png)
 
 
 
-## Developing
+## Development
 
-Setup up the develpment envionrment using `conda` (or `mamba`)
+The development environment can be set up with `conda` (or faster using `mamba`).
+This will handle the installation of PyMC better than using `pip`.
 
 ```bash
 mamba env create -f conda.yaml
 conda activate tumoroscope-pymc
 ```
 
-Run the test suite using `tox`
+The test suite can be run manually using the `pytest` command or using `tox` which also manages the test environment.
 
 ```bash
 tox
 ```
 
-Build the README documentation by re-executing the `README.ipynb` notebook and converting it to Markdown using the following command
+This README is built from a Jupyter notebook and can be re-executed and converted to Markdown using another `tox` command.
 
 ```bash
 tox -e readme
 ```
+
+Feature requests and bugs are welcome in [Issues](https://github.com/jhrcook/tumoroscope-pymc/issues) and contributions are also welcome.
 
 ---
 
@@ -514,9 +580,9 @@ tox -e readme
 
     Git branch: dev
 
-    numpy     : 1.23.4
+    seaborn   : 0.12.0
     pandas    : 1.5.1
+    numpy     : 1.23.4
     arviz     : 0.13.0
     pymc      : 4.2.2
-    seaborn   : 0.12.0
     matplotlib: 3.6.1
