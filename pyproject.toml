@@ -6,15 +6,27 @@ build-backend = "flit_core.buildapi"
 name = "tumoroscope-pymc"
 authors = [{name = "Joshua Cook", email = "joshuacook0023@gmail.com"}]
 license = {file = "LICENSE"}
-classifiers = ["License :: OSI Approved :: GNU General Public License v3 or later (GPLv3+)"]
+classifiers = [
+    "License :: OSI Approved :: GNU General Public License v3 or later (GPLv3+)",
+    "Intended Audience :: Science/Research",
+    "Topic :: Scientific/Engineering :: Bio-Informatics",
+    "Typing :: Typed",
+]
 dynamic = ["version", "description"]
 dependencies = [
     "numpy >= 1.23.0",
     "pymc >= 4.0.0",
 ]
+readme = "README.md"
+requires-python = ">=3.9"
+keywords = ["pymc", "bayesian", "tumoroscope", "model", "spatial-transcriptomics"]
 
 [tool.flit.module]
 name = "tumoroscope"
 
 [project.urls]
 Home = "https://github.com/jhrcook/tumoroscope-pymc"
+
+[tool.flit.sdist]
+include = ["tumoroscope/", "README.md", "README_files/", "tumoroscope-diagram.jpeg", "LICENSE"]
+exclude = ["tumoroscope/__pycache__/"]
